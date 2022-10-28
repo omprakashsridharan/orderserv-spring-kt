@@ -1,19 +1,25 @@
 package com.omprakash.orderservspringkt.dao
 
-import com.omprakash.orderservspringkt.dto.request.CreateProduct
+import com.omprakash.orderservspringkt.dto.request.CreateUser
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.util.Date
 import javax.persistence.*
 
+enum class UserRole {
+    ADMIN, USER
+}
+
 @Entity
-@Table(name = "products")
-data class Product(
+@Table(name = "users")
+data class User(
     @Column(unique = true)
-    var name: String,
-    var description: String,
-    var price: Float,
-    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "product")
+    var email: String,
+    var password: String,
+    var address: String,
+    @Enumerated(value = EnumType.STRING)
+    val role: UserRole = UserRole.USER,
+    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "user")
     var cartItems: Set<Cart>? = null
 ) {
     @Id
@@ -29,11 +35,8 @@ data class Product(
     lateinit var updatedAt: Date
 
     companion object {
-        fun fromDto(dto: CreateProduct) = Product(
-            name = dto.name,
-            description = dto.description,
-            price = dto.price
-        )
+        fun fromDto(createUser: CreateUser) =
+            User(email = createUser.email, password = createUser.password, address = createUser.address)
     }
 
 }
