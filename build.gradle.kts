@@ -31,7 +31,8 @@ dependencies {
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:mysql")
 	testImplementation("io.mockk:mockk:1.13.2")
-	testImplementation("net.java.dev.jna:jna-platform:5.8.0")
+	testImplementation("net.java.dev.jna:jna-platform:5.12.1")
+	testImplementation("com.h2database:h2:2.1.214")
 }
 
 dependencyManagement {

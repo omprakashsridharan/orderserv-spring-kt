@@ -9,8 +9,12 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.TestPropertySource
 import javax.transaction.Transactional
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(locations= ["classpath:test.properties"])
 internal class ProductServiceTest {
     private val productRepository = mockk<ProductRepository>()
     private val productService = ProductService(productRepository)
