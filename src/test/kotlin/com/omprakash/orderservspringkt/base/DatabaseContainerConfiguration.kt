@@ -5,7 +5,6 @@ import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.MySQLContainer
 import org.testcontainers.junit.jupiter.Container
-import java.util.function.Supplier
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 abstract class DatabaseContainerConfiguration {
@@ -17,7 +16,6 @@ abstract class DatabaseContainerConfiguration {
             withPassword("test")
         }
 
-        @JvmStatic
         @DynamicPropertySource
         fun properties(registry: DynamicPropertyRegistry) {
             registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl)

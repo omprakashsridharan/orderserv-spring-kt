@@ -18,8 +18,7 @@ class CartService(
         return try {
             val user = userService.getUserByEmail(addCartItem.email).getOrThrow()
             val product = productService.getProductByName(addCartItem.productName).getOrThrow()
-            val cartItemId = CartItemId(user, product)
-            val cartItem = Cart(cartItemId)
+            val cartItem = Cart(CartItemId(user,product))
             val result = cartRepository.save(cartItem)
             Result.success(result)
         } catch (e: Exception) {

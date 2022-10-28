@@ -19,7 +19,7 @@ data class User(
     var address: String,
     @Enumerated(value = EnumType.STRING)
     val role: UserRole = UserRole.USER,
-    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "user")
+    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "cartItemId.user")
     var cartItems: Set<Cart>? = null
 ) {
     @Id

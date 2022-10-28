@@ -13,7 +13,7 @@ data class Product(
     var name: String,
     var description: String,
     var price: Float,
-    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "product")
+    @OneToMany(cascade = [CascadeType.ALL], mappedBy = "cartItemId.product")
     var cartItems: Set<Cart>? = null
 ) {
     @Id

@@ -1,4 +1,4 @@
-package com.omprakash.orderservspringkt
+package com.omprakash.orderservspringkt.integration
 
 import com.omprakash.orderservspringkt.base.DatabaseContainerConfiguration
 import com.omprakash.orderservspringkt.dto.request.CreateProduct
