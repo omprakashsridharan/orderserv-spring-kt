@@ -9,6 +9,7 @@ import io.mockk.verify
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
+import javax.transaction.Transactional
 
 internal class ProductServiceTest {
     private val productRepository = mockk<ProductRepository>()

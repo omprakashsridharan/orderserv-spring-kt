@@ -8,7 +8,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "products")
-class Product (
+data class Product (
     @Column(unique = true)
     var name: String,
     var description: String,
