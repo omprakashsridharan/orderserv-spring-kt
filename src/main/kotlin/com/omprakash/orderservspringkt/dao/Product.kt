@@ -3,11 +3,12 @@ package com.omprakash.orderservspringkt.dao
 import com.omprakash.orderservspringkt.dto.request.AddProduct
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
-import java.sql.Date
+import java.util.Date
 import javax.persistence.*
 
 @Entity
-data class Product (
+@Table(name = "products")
+class Product (
     @Column(unique = true)
     var name: String,
     var description: String,
