@@ -6,6 +6,7 @@ import com.omprakash.orderservspringkt.repository.ProductRepository
 import org.springframework.stereotype.Service
 
 class AddProductInventoryException(message: String) : Exception(message)
+class ProductNotFoundInInventoryException(message: String) : Exception(message)
 
 @Service
 class ProductService(var productRepository: ProductRepository) {
@@ -16,6 +17,17 @@ class ProductService(var productRepository: ProductRepository) {
             Result.success(result)
         } catch (e: Exception) {
             Result.failure(AddProductInventoryException(e.message ?: "Error while adding product to inventory"))
+        }
+    }
+
+    fun getProduct(productName: String): Result<Product> {
+        return try {
+            productRepository.findByName(productName)?.let {
+                Result.success(it)
+            } ?: Result.failure(ProductNotFoundInInventoryException("Product by name $productName not present"))
+
+        } catch (e: Exception) {
+            Result.failure(ProductNotFoundInInventoryException(e.message ?: "Error while adding product to inventory"))
         }
     }
 }

@@ -39,4 +39,28 @@ internal class ProductServiceTest {
             result.getOrThrow()
         }
     }
+
+    @Test
+    fun `get product details success`() {
+        val addProductDto = AddProduct("P1", "Product 1", 10f)
+        val productDao = Product(addProductDto.name, addProductDto.description, addProductDto.price)
+        every { productRepository.findByName(addProductDto.name) } returns productDao;
+        val result = productService.getProduct(addProductDto.name)
+        verify { productRepository.findByName(addProductDto.name) }
+        assertEquals(result.isSuccess, true)
+        assertEquals(result.getOrNull()!!, productDao)
+    }
+
+    @Test
+    fun `get product details failure`() {
+        val addProductDto = AddProduct("P1", "Product 1", 10f)
+        val productDao = Product(addProductDto.name, addProductDto.description, addProductDto.price)
+        every { productRepository.findByName(addProductDto.name) } throws Exception("Product not found with name ${addProductDto.name}");
+        val result = productService.getProduct(addProductDto.name)
+        verify { productRepository.findByName(addProductDto.name) }
+        assertEquals(result.isFailure, true)
+        assertThrows(ProductNotFoundInInventoryException::class.java) {
+            result.getOrThrow()
+        }
+    }
 }

@@ -3,6 +3,7 @@ package com.omprakash.orderservspringkt
 import com.omprakash.orderservspringkt.base.DatabaseContainerConfiguration
 import com.omprakash.orderservspringkt.dto.request.AddProduct
 import com.omprakash.orderservspringkt.service.AddProductInventoryException
+import com.omprakash.orderservspringkt.service.ProductNotFoundInInventoryException
 import com.omprakash.orderservspringkt.service.ProductService
 import org.springframework.beans.factory.annotation.Autowired
 import org.junit.jupiter.api.Assertions.*
@@ -39,6 +40,26 @@ class ProductServiceIntegrationTest : DatabaseContainerConfiguration() {
         assertEquals(true,savedProductResult2.isFailure)
         assertThrows(AddProductInventoryException::class.java) {
             savedProductResult2.getOrThrow()
+        }
+    }
+
+    @Test
+    @Transactional
+    fun `get details of existing product in DB by name`() {
+        val addProductDto = AddProduct("P1", "Product 1", 10f)
+        val savedProductResult = productService.addProduct(addProductDto)
+        assertEquals(true, savedProductResult.isSuccess)
+        val getProductDetailsResult = productService.getProduct(addProductDto.name)
+        assertEquals(true, getProductDetailsResult.isSuccess)
+    }
+
+    @Test
+    @Transactional
+    fun `get details of unavailable product in DB by name`() {
+        val getProductDetailsResult = productService.getProduct("UNAVAILABLE")
+        assertEquals(true, getProductDetailsResult.isFailure)
+        assertThrows(ProductNotFoundInInventoryException::class.java) {
+            getProductDetailsResult.getOrThrow()
         }
     }
 }
