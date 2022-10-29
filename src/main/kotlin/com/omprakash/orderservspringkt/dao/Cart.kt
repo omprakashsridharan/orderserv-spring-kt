@@ -7,23 +7,19 @@ import java.util.*
 import javax.persistence.*
 
 @Embeddable
-class CartItemId(user: User, product: Product) : Serializable {
-
+data class CartItemId(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    lateinit var user: User
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    var user: User, @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
-    lateinit var product: Product
-}
+    var product: Product
+) : Serializable
 
 @Entity
-@Table(name = "carts")
+@Table(name = "carts", uniqueConstraints = [UniqueConstraint(columnNames = ["user_id", "product_id"])])
 data class Cart(
     @EmbeddedId
     val cartItemId: CartItemId,
-    val orderRequestId: UUID? = null
 ) {
 
     @CreationTimestamp

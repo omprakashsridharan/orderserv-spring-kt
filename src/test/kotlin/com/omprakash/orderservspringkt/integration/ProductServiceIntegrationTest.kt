@@ -10,12 +10,14 @@ import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.DirtiesContext
 import org.testcontainers.junit.jupiter.Testcontainers
 import javax.transaction.Transactional
 
 @Testcontainers
 @AutoConfigureMockMvc
 @SpringBootTest
+@DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
 class ProductServiceIntegrationTest : DatabaseContainerConfiguration() {
 
     @Autowired

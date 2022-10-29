@@ -17,6 +17,7 @@ abstract class DatabaseContainerConfiguration {
         }
 
         @DynamicPropertySource
+        @JvmStatic
         fun properties(registry: DynamicPropertyRegistry) {
             registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl)
             registry.add("spring.datasource.password", mysqlContainer::getPassword)
