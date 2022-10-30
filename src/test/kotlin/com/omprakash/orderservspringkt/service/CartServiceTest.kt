@@ -6,7 +6,7 @@ import com.omprakash.orderservspringkt.dao.Product
 import com.omprakash.orderservspringkt.dao.User
 import com.omprakash.orderservspringkt.dto.Events
 import com.omprakash.orderservspringkt.dto.Request
-import com.omprakash.orderservspringkt.producer.Producer
+import com.omprakash.orderservspringkt.producer.CreateOrderEventProducer
 import com.omprakash.orderservspringkt.repository.CartRepository
 import io.mockk.*
 import org.junit.jupiter.api.Test
@@ -21,8 +21,8 @@ internal class CartServiceTest {
     private val cartRepository = mockk<CartRepository>()
     private val userService = mockk<UserService>()
     private val productService = mockk<ProductService>()
-    private val producer = mockk<Producer>()
-    private val cartService = CartService(userService, productService, cartRepository, producer)
+    private val createOrderEventProducer = mockk<CreateOrderEventProducer>()
+    private val cartService = CartService(userService, productService, cartRepository, createOrderEventProducer)
 
     private val email = "test@test.com"
     private val productDao1 = Product("P1", "Product 1", 10f)
@@ -44,12 +44,12 @@ internal class CartServiceTest {
         every { userService.getUserByEmail(checkoutCartDto.email) } returns Result.success(userDao)
         every { cartRepository.findAllByCartItemId_User(userDao.id!!) } returns cartDaoItems
         every { UUID.randomUUID() } returns uuid
-        every { producer.sendCreateOrderEvent(createOrder) } just runs
+        every { createOrderEventProducer.sendCreateOrderEvent(createOrder) } just runs
         val result = cartService.checkout(checkoutCartDto)
         verify {
             userService.getUserByEmail(checkoutCartDto.email)
             cartRepository.findAllByCartItemId_User(userDao.id!!)
-            producer.sendCreateOrderEvent(createOrder)
+            createOrderEventProducer.sendCreateOrderEvent(createOrder)
         }
         assertEquals(result.isSuccess, true)
         assertEquals(result.getOrNull()!!, uuid)

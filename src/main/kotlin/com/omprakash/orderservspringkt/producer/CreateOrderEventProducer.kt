@@ -6,9 +6,9 @@ import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Component
 
 @Component
-class Producer(private val createOrderTemplate: KafkaTemplate<String,Events.CreateOrder>) {
+class CreateOrderEventProducer(private val createOrderTemplate: KafkaTemplate<String, Events.CreateOrder>) {
 
     fun sendCreateOrderEvent(createOrderEvent: Events.CreateOrder){
-        createOrderTemplate.send(CREATE_ORDER_TOPIC,createOrderEvent)
+        createOrderTemplate.send(CREATE_ORDER_TOPIC, createOrderEvent)
     }
 }

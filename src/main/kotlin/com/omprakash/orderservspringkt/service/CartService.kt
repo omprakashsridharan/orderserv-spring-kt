@@ -4,10 +4,10 @@ import com.omprakash.orderservspringkt.dao.Cart
 import com.omprakash.orderservspringkt.dao.CartItemId
 import com.omprakash.orderservspringkt.dto.Events
 import com.omprakash.orderservspringkt.dto.Request
-import com.omprakash.orderservspringkt.producer.Producer
+import com.omprakash.orderservspringkt.producer.CreateOrderEventProducer
 import com.omprakash.orderservspringkt.repository.CartRepository
 import org.springframework.stereotype.Service
-import java.util.UUID
+import java.util.*
 
 class AddProductToCartException(message: String) : Exception(message)
 
@@ -19,7 +19,7 @@ class CartService(
     val userService: UserService,
     val productService: ProductService,
     val cartRepository: CartRepository,
-    val producer: Producer
+    val createOrderEventProducer: CreateOrderEventProducer
 ) {
     fun addProductToCart(addCartItem: Request.AddCartItem): Result<Cart> {
         return try {
@@ -43,7 +43,7 @@ class CartService(
                 throw EmptyCartException("No products to checkout")
             }
             // Publish message to topic
-            producer.sendCreateOrderEvent(Events.CreateOrder(user.email))
+            createOrderEventProducer.sendCreateOrderEvent(Events.CreateOrder(user.email))
             Result.success(UUID.randomUUID())
         }catch (e: Exception) {
             Result.failure(CheckoutCartException(e.message ?: "Error while creating user"))
