@@ -1,6 +1,6 @@
 package com.omprakash.orderservspringkt.integration
 
-import com.omprakash.orderservspringkt.base.DatabaseContainerConfiguration
+import com.omprakash.orderservspringkt.base.ExternalContainerConfiguration
 import com.omprakash.orderservspringkt.dto.Request.CreateProduct
 import com.omprakash.orderservspringkt.service.AddProductInventoryException
 import com.omprakash.orderservspringkt.service.ProductNotFoundInInventoryException
@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.TestPropertySource
 import org.testcontainers.junit.jupiter.Testcontainers
 import javax.transaction.Transactional
 
@@ -18,7 +20,7 @@ import javax.transaction.Transactional
 @AutoConfigureMockMvc
 @SpringBootTest
 @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
-class ProductServiceIntegrationTest : DatabaseContainerConfiguration() {
+class ProductServiceIntegrationTest : ExternalContainerConfiguration() {
 
     @Autowired
     lateinit var productService: ProductService

@@ -5,6 +5,7 @@ import com.omprakash.orderservspringkt.dao.CartItemId
 import com.omprakash.orderservspringkt.dao.Product
 import com.omprakash.orderservspringkt.dao.User
 import com.omprakash.orderservspringkt.dto.Request
+import com.omprakash.orderservspringkt.producer.ExampleStringProducer
 import com.omprakash.orderservspringkt.repository.CartRepository
 import io.mockk.*
 import org.junit.jupiter.api.Test
@@ -16,12 +17,13 @@ import org.springframework.test.context.TestPropertySource
 import java.util.UUID
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(locations= ["classpath:test.properties"])
 internal class CartServiceTest {
     private val cartRepository = mockk<CartRepository>()
     private val userService = mockk<UserService>()
     private val productService = mockk<ProductService>()
-    private val cartService = CartService(userService, productService, cartRepository)
+    private val exampleStringProducer = mockk<ExampleStringProducer>()
+    private val cartService = CartService(userService, productService, cartRepository, exampleStringProducer)
+
 
     private val email = "test@test.com"
     private val productDao1 = Product("P1", "Product 1", 10f)

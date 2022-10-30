@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.TestPropertySource
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@TestPropertySource(locations = ["classpath:test.properties"])
 internal class UserServiceTest {
     private val userRepository = mockk<UserRepository>()
     private val userService = UserService(userRepository)

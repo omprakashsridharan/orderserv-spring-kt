@@ -3,6 +3,7 @@ package com.omprakash.orderservspringkt.service
 import com.omprakash.orderservspringkt.dao.Cart
 import com.omprakash.orderservspringkt.dao.CartItemId
 import com.omprakash.orderservspringkt.dto.Request
+import com.omprakash.orderservspringkt.producer.ExampleStringProducer
 import com.omprakash.orderservspringkt.repository.CartRepository
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -16,7 +17,8 @@ class EmptyCartException(message: String) : Exception("EmptyCartError: $message"
 class CartService(
     val userService: UserService,
     val productService: ProductService,
-    val cartRepository: CartRepository
+    val cartRepository: CartRepository,
+    val exampleStringProducer: ExampleStringProducer
 ) {
     fun addProductToCart(addCartItem: Request.AddCartItem): Result<Cart> {
         return try {
@@ -25,6 +27,7 @@ class CartService(
             val cartItemId = CartItemId(user,product)
             val cartItem = Cart(cartItemId)
             val result = cartRepository.saveAndFlush(cartItem)
+            exampleStringProducer.sendStringMessage("hello")
             Result.success(result)
         } catch (e: Exception) {
             Result.failure(AddProductToCartException(e.message ?: "Error while creating user"))
