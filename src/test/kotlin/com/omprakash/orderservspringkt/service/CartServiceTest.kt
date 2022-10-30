@@ -9,12 +9,11 @@ import com.omprakash.orderservspringkt.dto.Request
 import com.omprakash.orderservspringkt.producer.CreateOrderEventProducer
 import com.omprakash.orderservspringkt.repository.CartRepository
 import io.mockk.*
-import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
-import java.util.UUID
+import java.util.*
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 internal class CartServiceTest {
@@ -44,12 +43,14 @@ internal class CartServiceTest {
         every { userService.getUserByEmail(checkoutCartDto.email) } returns Result.success(userDao)
         every { cartRepository.findAllByCartItemId_User(userDao.id!!) } returns cartDaoItems
         every { UUID.randomUUID() } returns uuid
-        every { createOrderEventProducer.sendCreateOrderEvent(createOrder) } just runs
+        every { createOrderEventProducer.sendCreateOrderEvent(createOrder) } returns Result.success(true)
+        every {  cartRepository.deleteAllByIdInBatch(cartDaoItems.map { it.cartItemId }) } just runs
         val result = cartService.checkout(checkoutCartDto)
         verify {
             userService.getUserByEmail(checkoutCartDto.email)
             cartRepository.findAllByCartItemId_User(userDao.id!!)
             createOrderEventProducer.sendCreateOrderEvent(createOrder)
+            cartRepository.deleteAllByIdInBatch(cartDaoItems.map { it.cartItemId })
         }
         assertEquals(result.isSuccess, true)
         assertEquals(result.getOrNull()!!, uuid)

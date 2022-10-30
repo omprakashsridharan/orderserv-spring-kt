@@ -25,7 +25,7 @@ class CartService(
         return try {
             val user = userService.getUserByEmail(addCartItem.email).getOrThrow()
             val product = productService.getProductByName(addCartItem.productName).getOrThrow()
-            val cartItemId = CartItemId(user,product)
+            val cartItemId = CartItemId(user, product)
             val cartItem = Cart(cartItemId)
             val result = cartRepository.saveAndFlush(cartItem)
             Result.success(result)
@@ -39,13 +39,17 @@ class CartService(
             val user = userService.getUserByEmail(checkoutCart.email).getOrThrow()
             val userId = user.id ?: throw UserNotFoundException("User ID null")
             val cartItems = cartRepository.findAllByCartItemId_User(userId)
-            if(cartItems.isEmpty()){
+            if (cartItems.isEmpty()) {
                 throw EmptyCartException("No products to checkout")
             }
-            // Publish message to topic
             createOrderEventProducer.sendCreateOrderEvent(Events.CreateOrder(user.email))
+                .onSuccess {
+                    cartRepository.deleteAllByIdInBatch(cartItems.map { it.cartItemId })
+                }.onFailure {
+                    throw it
+                }
             Result.success(UUID.randomUUID())
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             Result.failure(CheckoutCartException(e.message ?: "Error while creating user"))
         }
     }

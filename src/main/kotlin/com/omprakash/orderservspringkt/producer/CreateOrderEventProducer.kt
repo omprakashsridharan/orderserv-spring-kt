@@ -8,7 +8,12 @@ import org.springframework.stereotype.Component
 @Component
 class CreateOrderEventProducer(private val createOrderTemplate: KafkaTemplate<String, Events.CreateOrder>) {
 
-    fun sendCreateOrderEvent(createOrderEvent: Events.CreateOrder){
-        createOrderTemplate.send(CREATE_ORDER_TOPIC, createOrderEvent)
+    fun sendCreateOrderEvent(createOrderEvent: Events.CreateOrder): Result<Boolean> {
+        return try {
+            val result = createOrderTemplate.send(CREATE_ORDER_TOPIC, createOrderEvent).get()
+            Result.success(true)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }
