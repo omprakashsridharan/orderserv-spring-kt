@@ -35,7 +35,7 @@ class CartService(
         return try {
             val user = userService.getUserByEmail(checkoutCart.email).getOrThrow()
             val userId = user.id ?: throw UserNotFoundException("User ID null")
-            val cartItems = cartRepository.findAllByIdUser(userId)
+            val cartItems = cartRepository.findAllByCartItemId_User(userId)
             if(cartItems.isEmpty()){
                 throw EmptyCartException("No products to checkout")
             }

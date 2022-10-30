@@ -11,8 +11,12 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.TestPropertySource
 import java.util.UUID
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(locations= ["classpath:test.properties"])
 internal class CartServiceTest {
     private val cartRepository = mockk<CartRepository>()
     private val userService = mockk<UserService>()
@@ -36,12 +40,12 @@ internal class CartServiceTest {
     fun `checkout success`() {
         val cartDaoItems = listOf(Cart(CartItemId(userDao, productDao1)), Cart(CartItemId(userDao, productDao2)))
         every { userService.getUserByEmail(checkoutCartDto.email) } returns Result.success(userDao)
-        every { cartRepository.findAllByIdUser(userDao.id!!) } returns cartDaoItems
+        every { cartRepository.findAllByCartItemId_User(userDao.id!!) } returns cartDaoItems
         every { UUID.randomUUID() } returns uuid
         val result = cartService.checkout(checkoutCartDto)
         verify {
             userService.getUserByEmail(checkoutCartDto.email)
-            cartRepository.findAllByIdUser(userDao.id!!)
+            cartRepository.findAllByCartItemId_User(userDao.id!!)
         }
         assertEquals(result.isSuccess, true)
         assertEquals(result.getOrNull()!!, uuid)
