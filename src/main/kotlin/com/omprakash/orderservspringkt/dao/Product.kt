@@ -1,6 +1,6 @@
 package com.omprakash.orderservspringkt.dao
 
-import com.omprakash.orderservspringkt.dto.request.CreateProduct
+import com.omprakash.orderservspringkt.dto.Request.CreateProduct
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
 import java.util.Date

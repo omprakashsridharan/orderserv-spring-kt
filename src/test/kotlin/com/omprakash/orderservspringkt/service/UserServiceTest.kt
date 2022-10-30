@@ -1,7 +1,7 @@
 package com.omprakash.orderservspringkt.service
 
 import com.omprakash.orderservspringkt.dao.User
-import com.omprakash.orderservspringkt.dto.request.CreateUser
+import com.omprakash.orderservspringkt.dto.Request
 import com.omprakash.orderservspringkt.repository.UserRepository
 import io.mockk.every
 import io.mockk.mockk
@@ -20,7 +20,7 @@ internal class UserServiceTest {
 
     @Test
     fun `create user success`() {
-        val createUserDto = CreateUser("test@test.com", "password", "ADDRESS")
+        val createUserDto = Request.CreateUser("test@test.com", "password", "ADDRESS")
         val userDao = User.fromDto(createUserDto)
         every { userRepository.save(userDao) } returns userDao;
         val result = userService.createUser(createUserDto)
@@ -31,7 +31,7 @@ internal class UserServiceTest {
 
     @Test
     fun `create user failure`() {
-        val createUserDto = CreateUser("test@test.com", "password", "ADDRESS")
+        val createUserDto = Request.CreateUser("test@test.com", "password", "ADDRESS")
         val userDao = User.fromDto(createUserDto)
         every { userRepository.save(userDao) } throws Exception("Error while saving user");
         val result = userService.createUser(createUserDto)

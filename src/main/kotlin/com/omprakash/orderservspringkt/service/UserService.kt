@@ -1,7 +1,7 @@
 package com.omprakash.orderservspringkt.service
 
 import com.omprakash.orderservspringkt.dao.User
-import com.omprakash.orderservspringkt.dto.request.CreateUser
+import com.omprakash.orderservspringkt.dto.Request
 import com.omprakash.orderservspringkt.repository.UserRepository
 import org.springframework.stereotype.Service
 
@@ -10,7 +10,7 @@ class UserNotFoundException(message: String) : Exception(message)
 
 @Service
 class UserService(val userRepository: UserRepository) {
-    fun createUser(createUser: CreateUser): Result<User> {
+    fun createUser(createUser: Request.CreateUser): Result<User> {
         return try {
             val userDao = User.fromDto(createUser)
             val result = userRepository.save(userDao)

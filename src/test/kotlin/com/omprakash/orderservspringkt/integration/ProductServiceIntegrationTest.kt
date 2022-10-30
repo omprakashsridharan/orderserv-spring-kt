@@ -1,7 +1,7 @@
 package com.omprakash.orderservspringkt.integration
 
 import com.omprakash.orderservspringkt.base.DatabaseContainerConfiguration
-import com.omprakash.orderservspringkt.dto.request.CreateProduct
+import com.omprakash.orderservspringkt.dto.Request.CreateProduct
 import com.omprakash.orderservspringkt.service.AddProductInventoryException
 import com.omprakash.orderservspringkt.service.ProductNotFoundInInventoryException
 import com.omprakash.orderservspringkt.service.ProductService

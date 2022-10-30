@@ -1,7 +1,7 @@
 package com.omprakash.orderservspringkt.service
 
 import com.omprakash.orderservspringkt.dao.Product
-import com.omprakash.orderservspringkt.dto.request.CreateProduct
+import com.omprakash.orderservspringkt.dto.Request.CreateProduct
 import com.omprakash.orderservspringkt.repository.ProductRepository
 import io.mockk.every
 import io.mockk.mockk

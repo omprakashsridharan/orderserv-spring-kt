@@ -1,9 +1,9 @@
 package com.omprakash.orderservspringkt.integration
 
 import com.omprakash.orderservspringkt.base.DatabaseContainerConfiguration
-import com.omprakash.orderservspringkt.dto.request.AddCartItem
-import com.omprakash.orderservspringkt.dto.request.CreateProduct
-import com.omprakash.orderservspringkt.dto.request.CreateUser
+import com.omprakash.orderservspringkt.dto.Request.AddCartItem
+import com.omprakash.orderservspringkt.dto.Request.CreateProduct
+import com.omprakash.orderservspringkt.dto.Request.CreateUser
 import com.omprakash.orderservspringkt.repository.CartRepository
 import com.omprakash.orderservspringkt.service.*
 import org.junit.jupiter.api.Assertions.assertEquals

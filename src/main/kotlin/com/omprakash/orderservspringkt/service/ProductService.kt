@@ -1,7 +1,7 @@
 package com.omprakash.orderservspringkt.service
 
 import com.omprakash.orderservspringkt.dao.Product
-import com.omprakash.orderservspringkt.dto.request.CreateProduct
+import com.omprakash.orderservspringkt.dto.Request
 import com.omprakash.orderservspringkt.repository.ProductRepository
 import org.springframework.stereotype.Service
 
@@ -10,7 +10,7 @@ class ProductNotFoundInInventoryException(message: String) : Exception(message)
 
 @Service
 class ProductService(var productRepository: ProductRepository) {
-    fun createProduct(createProduct: CreateProduct): Result<Product> {
+    fun createProduct(createProduct: Request.CreateProduct): Result<Product> {
         return try {
             val productDao = Product.fromDto(createProduct)
             val result = productRepository.save(productDao)
