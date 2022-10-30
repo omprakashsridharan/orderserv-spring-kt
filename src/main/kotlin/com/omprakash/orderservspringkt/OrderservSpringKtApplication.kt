@@ -1,6 +1,6 @@
  package com.omprakash.orderservspringkt
 
-import com.omprakash.orderservspringkt.producer.ExampleStringProducer
+import com.omprakash.orderservspringkt.producer.Producer
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -14,7 +14,7 @@ fun main(args: Array<String>) {
 }
 
 @Component
-class CommandExample(private val exampleStringProducer: ExampleStringProducer) : CommandLineRunner {
+class CommandExample(private val producer: Producer) : CommandLineRunner {
 	override fun run(vararg args: String?) {
 //		exampleStringProducer.sendStringMessage("test message")
 	}

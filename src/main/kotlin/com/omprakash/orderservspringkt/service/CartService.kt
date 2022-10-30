@@ -2,8 +2,9 @@ package com.omprakash.orderservspringkt.service
 
 import com.omprakash.orderservspringkt.dao.Cart
 import com.omprakash.orderservspringkt.dao.CartItemId
+import com.omprakash.orderservspringkt.dto.Events
 import com.omprakash.orderservspringkt.dto.Request
-import com.omprakash.orderservspringkt.producer.ExampleStringProducer
+import com.omprakash.orderservspringkt.producer.Producer
 import com.omprakash.orderservspringkt.repository.CartRepository
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -18,7 +19,7 @@ class CartService(
     val userService: UserService,
     val productService: ProductService,
     val cartRepository: CartRepository,
-    val exampleStringProducer: ExampleStringProducer
+    val producer: Producer
 ) {
     fun addProductToCart(addCartItem: Request.AddCartItem): Result<Cart> {
         return try {
@@ -27,7 +28,6 @@ class CartService(
             val cartItemId = CartItemId(user,product)
             val cartItem = Cart(cartItemId)
             val result = cartRepository.saveAndFlush(cartItem)
-            exampleStringProducer.sendStringMessage("hello")
             Result.success(result)
         } catch (e: Exception) {
             Result.failure(AddProductToCartException(e.message ?: "Error while creating user"))
@@ -43,6 +43,7 @@ class CartService(
                 throw EmptyCartException("No products to checkout")
             }
             // Publish message to topic
+            producer.sendCreateOrderEvent(Events.CreateOrder(user.email))
             Result.success(UUID.randomUUID())
         }catch (e: Exception) {
             Result.failure(CheckoutCartException(e.message ?: "Error while creating user"))
